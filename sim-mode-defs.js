@@ -31,7 +31,7 @@ SPAWN_RULES[SIM_MODE_MEGABLOBS] = function(b){
 SPAWN_RULES[SIM_MODE_EXPERIMENTAL] = SPAWN_RULES[SIM_MODE_HYPER];
 
 SPAWN_RULES[SIM_MODE_WPAC] = function(b){
-    if(random()<0.005) b.spawn(false,{x:random(0.1*WIDTH,0.7*WIDTH),y:random(0.7*HEIGHT,0.8*HEIGHT),sType:'l'}); //tropics spawn area
+    if(random()<0.0075) b.spawn(false,{x:random(0.1*WIDTH,0.7*WIDTH),y:random(0.7*HEIGHT,0.8*HEIGHT),sType:'l'}); //tropics spawn area
     if(random()<0.01-0.002*seasonalSine(b.tick)) b.spawn(true);                 // extratropical cyclones
 };
 
@@ -362,8 +362,8 @@ ENV_DEFS[SIM_MODE_EXPERIMENTAL].SSTAnomaly = {};
 ENV_DEFS[SIM_MODE_WPAC].SSTAnomaly = {
     mapFunc: (u,x,y,z)=>{
         let v = u.noise(0);
-        v = v*1.5;
-        let i = v<1 ? -0.5 : 2;
+        v = v*2;
+        let i = v<1 ? -0.25 : 0.7;
         v = 1-abs(1-v);
         if(v===0) v = 0.000001;
         v = log(v);
