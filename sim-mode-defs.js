@@ -1,12 +1,13 @@
 // ---- Simulation Modes ---- //
 
-const SIMULATION_MODES = ['Normal (Atlantic)','Hyper','Wild','Megablobs','Experimental','WPac']; // Labels for sim mode selector UI
+const SIMULATION_MODES = ['Normal (Atlantic)','Hyper','Wild','Megablobs','Experimental','WPac','EPac']; // Labels for sim mode selector UI
 const SIM_MODE_NORMAL = 0;
 const SIM_MODE_HYPER = 1;
 const SIM_MODE_WILD = 2;
 const SIM_MODE_MEGABLOBS = 3;
 const SIM_MODE_EXPERIMENTAL = 4;
 const SIM_MODE_WPAC = 5;
+const SIM_MODE_EPAC = 6;
 
 // ---- Spawn Rules ---- //
 
@@ -34,7 +35,10 @@ SPAWN_RULES[SIM_MODE_WPAC] = function(b){
     if(random()<0.0075) b.spawn(false,{x:random(0.1*WIDTH,0.7*WIDTH),y:random(0.7*HEIGHT,0.8*HEIGHT),sType:'l'}); //tropics spawn area
     if(random()<0.01-0.002*seasonalSine(b.tick)) b.spawn(true);                 // extratropical cyclones
 };
-
+SPAWN_RULES[SIM_MODE_EPAC] = function(b){
+    if(random()<(0.0075*sq((seasonalSine(b.tick)+1)/2)+0.002)) b.spawn(false,{x:random(0,WIDTH),y:random(0.6*HEIGHT,0.8*HEIGHT),sType:'l'}); //tropics spawn area
+    if(random()<0.01-0.002*seasonalSine(b.tick)) b.spawn(true);                 // extratropical cyclones
+};
 // ---- Definitions of Environmental Fields ---- //
 
 const ENV_DEFS = {};
@@ -46,6 +50,7 @@ ENV_DEFS[SIM_MODE_WILD] = {};  // "Wild" simulation mode
 ENV_DEFS[SIM_MODE_MEGABLOBS] = {}; // "Megablobs" simulation mode
 ENV_DEFS[SIM_MODE_EXPERIMENTAL] = {}; // "Experimental" simulation mode
 ENV_DEFS[SIM_MODE_WPAC] = {}; // "WPAC" simulation mode
+ENV_DEFS[SIM_MODE_EPAC] = {}; // "EPAC" simulation mode
 
 // -- Sample Env Field -- //
 
@@ -117,6 +122,7 @@ ENV_DEFS[SIM_MODE_MEGABLOBS].jetstream = {
 };
 ENV_DEFS[SIM_MODE_EXPERIMENTAL].jetstream = {};
 ENV_DEFS[SIM_MODE_WPAC].jetstream = {};
+ENV_DEFS[SIM_MODE_EPAC].jetstream = {};
 
 // -- LLSteering -- //
 
@@ -179,6 +185,7 @@ ENV_DEFS[SIM_MODE_WILD].LLSteering = {
 ENV_DEFS[SIM_MODE_MEGABLOBS].LLSteering = {};
 ENV_DEFS[SIM_MODE_EXPERIMENTAL].LLSteering = {};
 ENV_DEFS[SIM_MODE_WPAC].LLSteering = {};
+ENV_DEFS[SIM_MODE_EPAC].LLSteering = {};
 
 // -- ULSteering -- //
 
@@ -283,6 +290,7 @@ ENV_DEFS[SIM_MODE_WPAC].ULSteering = {
         hadleyUpperBound: 4
     }
 };
+ENV_DEFS[SIM_MODE_EPAC].ULSteering = {};
 
 // -- shear -- //
 
@@ -305,6 +313,7 @@ ENV_DEFS[SIM_MODE_WILD].shear = {};
 ENV_DEFS[SIM_MODE_MEGABLOBS].shear = {};
 ENV_DEFS[SIM_MODE_EXPERIMENTAL].shear = {};
 ENV_DEFS[SIM_MODE_WPAC].shear = {};
+ENV_DEFS[SIM_MODE_EPAC].shear = {};
 
 // -- SSTAnomaly -- //
 
@@ -360,6 +369,23 @@ ENV_DEFS[SIM_MODE_MEGABLOBS].SSTAnomaly = {
 };
 ENV_DEFS[SIM_MODE_EXPERIMENTAL].SSTAnomaly = {};
 ENV_DEFS[SIM_MODE_WPAC].SSTAnomaly = {
+    mapFunc: (u,x,y,z)=>{
+        let v = u.noise(0);
+        v = v*2;
+        let i = v<1 ? -0.125 : 0.7;
+        v = 1-abs(1-v);
+        if(v===0) v = 0.000001;
+        v = log(v);
+        let r;
+        if(u.modifiers.r!==undefined) r = u.modifiers.r;
+        else r = map(y,0,HEIGHT,3,6);
+        v = -r*v;
+        v = v*i;
+        if(u.modifiers.bigBlobBase!==undefined && v>u.modifiers.bigBlobExponentThreshold) v += pow(u.modifiers.bigBlobBase,v-u.modifiers.bigBlobExponentThreshold)-1;
+        return v;
+},
+};
+ENV_DEFS[SIM_MODE_EPAC].SSTAnomaly = {
     mapFunc: (u,x,y,z)=>{
         let v = u.noise(0);
         v = v*2;
@@ -479,6 +505,30 @@ ENV_DEFS[SIM_MODE_WPAC].SST = {
         peakSeasonTropicsTemp: 29,
     }
 };   
+ENV_DEFS[SIM_MODE_EPAC].SST = {
+    mapFunc: (u,x,y,z)=>{
+        if(y<0) return 0;
+        let anom = u.field('SSTAnomaly');
+        let s = seasonalSine(z);
+        let w = map(cos(map(x,0,WIDTH,0,PI)),-0,0.8,0.8,0.8);
+        let h0 = y/HEIGHT;
+        let h1 = (sqrt(h0)+h0)/2;
+        let h2 = sqrt(sqrt(h0));
+        let h = map(cos(lerp(PI,0,lerp(h1,h2,sq(w)))),-1,1,0,1);
+        let ospt = u.modifiers.offSeasonPolarTemp;
+        let pspt = u.modifiers.peakSeasonPolarTemp;
+        let ostt = u.modifiers.offSeasonTropicsTemp;
+        let pstt = u.modifiers.peakSeasonTropicsTemp;
+        let t = lerp(map(s,-1,1,ospt,pspt),map(s,-1,1,ostt,pstt),h);
+        return t+anom;
+    },
+    modifiers: {
+        offSeasonPolarTemp: -3,
+        peakSeasonPolarTemp: 0,
+        offSeasonTropicsTemp: 25,
+        peakSeasonTropicsTemp: 27.5,
+    }
+};   
 
 // -- moisture -- //
 
@@ -546,3 +596,4 @@ ENV_DEFS[SIM_MODE_WPAC].moisture = {
         mountainMoisture: 0
     }
 };
+ENV_DEFS[SIM_MODE_EPAC].moisture = {};
