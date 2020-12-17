@@ -423,7 +423,7 @@ UI.init = function(){
         text(TITLE,0,0);
         textSize(18);
         textStyle(ITALIC);
-        text("I don't really know what I'm doing I pretty much just take PB's fork and screw around with numbers I am awful with computers in general :<",0,40);
+        text("I don't know what I'm doing I just take PB's fork and screw around with numbers I suck at computer code stuffs :<",0,40);
     });
 
     mainMenu.append(false,WIDTH/2-100,HEIGHT/2-20,200,40,function(s){    // "New Basin" button
