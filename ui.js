@@ -423,8 +423,8 @@ UI.init = function(){
         text(TITLE,0,0);
         textSize(18);
         textStyle(NORMAL);
-        text("I don't know what I'm doing I pretty much just took PB's fork and screw around with numbers till I'm bored...",0,40); 
-        text("I suck at code and computers in general :<",0,65);
+        text("I don't know what I'm doing I pretty much just took PB's fork and screw around with numbers till I'm bored...",0,50); 
+        text("I suck at code and computers in general :<",0,75);
     });
 
     mainMenu.append(false,WIDTH/2-100,HEIGHT/2-20,200,40,function(s){    // "New Basin" button
