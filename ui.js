@@ -423,7 +423,7 @@ UI.init = function(){
         text(TITLE,0,0);
         textSize(18);
         textStyle(ITALIC);
-        text("The realistic tropical cyclone simulator.",0,40);
+        text("I don't really know what I do I pretty much just take PB's fork and screw around with numbers I am awful with computers in genera; :<",0,40);
     });
 
     mainMenu.append(false,WIDTH/2-100,HEIGHT/2-20,200,40,function(s){    // "New Basin" button
