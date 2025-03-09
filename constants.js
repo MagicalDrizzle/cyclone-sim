@@ -7,8 +7,8 @@ const SAVE_FORMAT = 7;  // Format #7 in use starting in v0.4
 const EARLIEST_COMPATIBLE_FORMAT = 0;
 const ENVDATA_COMPATIBLE_FORMAT = 0;
 
-const WIDTH = 960; // 16:9 aspect ratio
-const HEIGHT = 540;
+const WIDTH = 1120; // 16:9 aspect ratio
+const HEIGHT = 630;
 const DIAMETER = 20;    // Storm icon diameter
 const PERLIN_ZOOM = 100;    // Resolution for perlin noise
 const TICK_DURATION = 3600000;  // How long in sim time does a tick last in milliseconds (1 hour)
@@ -132,9 +132,9 @@ const MAP_TYPES = [     // Land generation controls and option presets for diffe
     {   
 		label: "Atlantic Ocean",
         form: 'earth',
-        west: -116,
-        east: 36,
-        north: 70,
+        west: -102.67,
+        east: 3,
+        north: 59.45,
         south: 0,
         mainSubBasin: EARTH_SB_IDS.atl,
         optionPresets: {
@@ -148,9 +148,9 @@ const MAP_TYPES = [     // Land generation controls and option presets for diffe
     {   
 		label: "Eastern Pacific",
         form: 'earth',
-        west: 150,
-        east: -80,
-        north: 70,
+        west: -180,
+        east: -74.33,
+        north: 59.45,
         south: 0,
         mainSubBasin: EARTH_SB_IDS.epac,
         optionPresets: {
@@ -180,9 +180,9 @@ const MAP_TYPES = [     // Land generation controls and option presets for diffe
     {   
 		label: "Western Pacific",
         form: 'earth',
-        west: 100,
-        east: -165,
-        north: 70,
+        west: 94.42,
+        east: -159.91,
+        north: 59.45,
         south: 0,
         mainSubBasin: EARTH_SB_IDS.wpac,
         optionPresets: {
@@ -245,9 +245,9 @@ const MAP_TYPES = [     // Land generation controls and option presets for diffe
     {   
 		label: "Northern Indian Ocean",
         form: 'earth',
-        west: 10,
-        east: 150,
-        north: 70,
+        west: 25.95,
+        east: 131.62,
+        north: 59.45,
         south: 0,
         mainSubBasin: EARTH_SB_IDS.nio,
         optionPresets: {
@@ -295,10 +295,10 @@ const MAP_TYPES = [     // Land generation controls and option presets for diffe
     {   
 		label: "Australian Region",
         form: 'earth',
-        west: 80,
-        east: 180,
+        west: 82.03,
+        east: -172.29,
         north: 0,
-        south: -70,
+        south: -59.45,
         mainSubBasin: EARTH_SB_IDS.aus,
         optionPresets: {
             hem: 2,
@@ -311,10 +311,10 @@ const MAP_TYPES = [     // Land generation controls and option presets for diffe
  {   
 		label: "South Pacific",
         form: 'earth',
-        west: 100,
-        east: -120,
+        west: 147.2,
+        east: -107.13,
         north: 0,
-        south: -70,
+        south: -59.45,
         mainSubBasin: EARTH_SB_IDS.spac,
         optionPresets: {
             hem: 2,
@@ -344,10 +344,10 @@ const MAP_TYPES = [     // Land generation controls and option presets for diffe
     {   
 		label: "South-West Indian Ocean",
         form: 'earth',
-        west: 10,
-        east: 165,
+        west: 17.25,
+        east: 122.93,
         north: 0,
-        south: -70,
+        south: -59.45,
         mainSubBasin: EARTH_SB_IDS.swio,
         optionPresets: {
             hem: 2,
@@ -392,10 +392,10 @@ const MAP_TYPES = [     // Land generation controls and option presets for diffe
     {   
 		label: "South Atlantic",
         form: 'earth',
-        west: -70,
-        east: 30,
+        west: -81.48,
+        east: 24.19,
         north: 0,
-        south: -70,
+        south: -59.45,
         mainSubBasin: EARTH_SB_IDS.satl,
         optionPresets: {
             hem: 2,
@@ -469,7 +469,7 @@ const KEY_REPEAT_COOLDOWN = 15;
 const KEY_REPEATER = 5;
 const MAX_SNOW_LAYERS = 100;
 const SNOW_SEASON_OFFSET = 5/6;
-const ENV_LAYER_TILE_SIZE = 16;
+const ENV_LAYER_TILE_SIZE = 14;
 const NC_OFFSET_RANDOM_FACTOR = 4096;
 const ACE_WIND_THRESHOLD = 34;
 const ACE_DIVISOR = 10000;
