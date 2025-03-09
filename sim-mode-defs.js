@@ -348,7 +348,7 @@ SPAWN_RULES[SIM_MODE_EasternHemisphere].doSpawn = function(b){
 };
 SPAWN_RULES[SIM_MODE_NorthAtlantic].doSpawn = function(b){
     // tropical waves
-    if(random()<0.0095*sq((seasonalSine(b.tick)+1)/2)) b.spawnArchetype('tw');
+    if(random()<0.008*sq((seasonalSine(b.tick)+1)/2)) b.spawnArchetype('tw');
 
     // extratropical cyclones
     if(random()<0.02-0.002*seasonalSine(b.tick)) b.spawnArchetype('ex');
@@ -1052,12 +1052,55 @@ ENV_DEFS[SIM_MODE_Deluge].shear = {};
 // -- SSTAnomaly -- //
 
 ENV_DEFS.defaults.SSTAnomaly = {
+        displayName: 'Sea surface temp. anomaly',
+    version: 0,
+    mapFunc: (u,x,y,z)=>{
+        let v = u.noise(0);
+        v = v*1.8;
+        let i = v<1 ? -0.5 : 1;
+        v = 1-abs(1-v);
+        if(v===0) v = 0.000001;
+        v = log(v);
+        let r;
+        if(u.modifiers.r!==undefined) r = u.modifiers.r;
+        else r = map(y,0,HEIGHT,6,3);
+        v = -r*v;
+        v = v*i;
+        if(u.modifiers.bigBlobBase!==undefined && v>u.modifiers.bigBlobExponentThreshold) v += pow(u.modifiers.bigBlobBase,v-u.modifiers.bigBlobExponentThreshold)-1;
+        return v;
+    },
+    displayFormat: v=>{
+        let str = '';
+        if(v >= 0)
+            str += '+';
+        str += round(v*10)/10;
+        str += '\u2103'; // degrees celsius sign
+        return str;
+    },
+    hueMap: (v)=>{
+        colorMode(HSB);
+        let cold = color(240,100,70);
+        let hot = color(0,100,70);
+        let cNeutral = color(240,1,90);
+        let hNeutral = color(0,1,90);
+        let c;
+        if(v<0) c = lerpColor(cold,cNeutral,map(v,-5,0,0,1));
+        else c = lerpColor(hNeutral,hot,map(v,0,5,0,1));
+        colorMode(RGB);
+        return c;
+    },
+    oceanic: true,
+    noiseChannels: [
+        [6,0.5,150,3000,0.05,1.5]
+    ]
+    // fork
+    /*
     displayName: 'Sea surface temp. anomaly',
     version: 0,
     mapFunc: (u,x,y,z)=>{
         let v = u.noise(0);
-        v = v*2;
-        let i = v<1 ? -1 : 1;
+        v = v*1.8;
+        let i = v<1 ? -0.5 : 1;
         v = 1-abs(1-v);
         if(v===0) v = 0.000001;
         v = log(v);
@@ -1115,6 +1158,7 @@ ENV_DEFS.defaults.SSTAnomaly = {
     noiseChannels: [
         [6,0.5,150,3000,0.05,1.5]
     ]
+    */
 };
 ENV_DEFS[SIM_MODE_NORMAL].SSTAnomaly = {};
 ENV_DEFS[SIM_MODE_HYPER].SSTAnomaly = {};
@@ -1546,7 +1590,7 @@ ENV_DEFS[SIM_MODE_EasternHemisphere].moisture = {
 };
 ENV_DEFS[SIM_MODE_NorthAtlantic].moisture = {
     modifiers: {
-        polarMoisture: 0.4,
+        polarMoisture: 0.3,
         tropicalMoisture: 0.55,
         mountainMoisture: 0.1
     }
