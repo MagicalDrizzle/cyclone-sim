@@ -1079,6 +1079,40 @@ ENV_DEFS.defaults.SSTAnomaly = {
     },
     hueMap: (v)=>{
         colorMode(HSB);
+        let coldwave = color(349, 100, 15);
+        let verycold = color(304, 88, 57);
+        let cold = color(248, 51, 77);
+        let chilly = color(230, 93, 84);
+        let cool = color(213, 92, 98);
+        let cNeutral = color(184, 100, 100);
+        let neutral = color(0, 0, 85);
+        let nearnormal = color(0, 0, 85);
+        let hNeutral = color(61, 100, 96);
+        let mild = color(46, 81, 95);
+        let warm = color(25, 85, 100);
+        let hot = color(7, 88, 100);
+        let stifling = color(9, 90, 65);
+        let heatwave = color(0, 100, 20);
+        let c;
+        if (v >= -5 && v < -4) { c = lerpColor(coldwave,verycold,map(v,-5,-4,0,1));
+         }
+         else if (v >= -4 && v < -3) { c = lerpColor(verycold,cold,map(v,-4,-3,0,1));
+         }
+         else if (v >= -3. && v < -2) { c = lerpColor(cold,chilly,map(v,-3,-2,0,1));
+          } else if (v >= -2. && v < -1) { c = lerpColor(chilly,cool,map(v,-2,-1,0,1));
+          } else if (v >= -1 && v < -0.1) { c = lerpColor(cool,cNeutral,map(v,-1,-0.2,0,1));
+          } else if (v >= -0.1 && v < 0.1) { c = lerpColor(neutral,nearnormal,map(v,-0.2,0.2,0,1));
+          }  else if (v >= 0.1 && v < 1) { c = lerpColor(hNeutral,mild,map(v,0.2,1,0,1));
+          }  else if (v >= 1 && v < 2) { c = lerpColor(mild,warm,map(v,1,2,0,1));
+          }   else if (v >= 2 && v < 3) { c = lerpColor(warm,hot,map(v,2,3,0,1));
+          }   else if (v >= 3 && v < 4) { c = lerpColor(hot,stifling,map(v,3,4,0,1));
+          }  
+          else  c = lerpColor(stifling,heatwave,map(v,4,5,0,1));
+        colorMode(RGB);
+        return c;
+        // default
+        /*
+        colorMode(HSB);
         let cold = color(240,100,70);
         let hot = color(0,100,70);
         let cNeutral = color(240,1,90);
@@ -1088,6 +1122,7 @@ ENV_DEFS.defaults.SSTAnomaly = {
         else c = lerpColor(hNeutral,hot,map(v,0,5,0,1));
         colorMode(RGB);
         return c;
+        */
     },
     oceanic: true,
     noiseChannels: [
