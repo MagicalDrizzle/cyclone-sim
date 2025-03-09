@@ -1,24 +1,25 @@
-body{
-	background: #BBB;
-	background: -o-linear-gradient(#BBB,#F3F3F3);
-	background: -webkit-linear-gradient(#BBB,#F3F3F3);
-	background: -moz-linear-gradient(#BBB,#F3F3F3);
-	background: linear-gradient(#BBB,#F3F3F3);
+body {
+	background: #1d1d1d;
 	font-family: Calibri, Arial;
+	height: 100%;
+	margin: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-a{
+a {
 	display: inline-block;
 	text-decoration: none;
 	color: blue;
 }
 
-#version{
+#version {
 	position: fixed;
 	bottom: 0px;
-	right: 0px;
+	right: 5px;
 	color: #777;
-	padding: 10px;
+	padding: 1px;
 	z-index: 100;
 	user-select: none;
 	-moz-user-select: none;
@@ -26,24 +27,24 @@ a{
 	-ms-user-select: none;
 }
 
-a:after{
+a:after {
 	display: block;
 	content: '';
-	border-bottom: solid 1px black;
+	border-bottom: solid 1px #bbb;
 	transform: scaleX(0);
-	transition: transform 300ms;
+	transition: transform 200ms;
 }
 
-a:hover, a#version:hover{
-	color: black;
+a:hover, a#version:hover {
+	color: #bbb;
 	transform-origin: 50% 50%;
 }
 
-a:hover:after{
+a:hover:after {
 	transform: scaleX(1);
 }
 
-ul{
+ul {
 	list-style: none;
 	text-align: center;
 }
